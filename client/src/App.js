@@ -9,6 +9,8 @@ import client from './client';
 import Vitals from './components/vitals';
 import MedicalHistory from './components/medicalhistory';
 import VisitAppointments from './components/visitappointment';
+import DoctorDetails from './components/doctorDetails'
+import DoctorVitals from  './components/doctorVitals'
 //import PatientDashboard from './components/PatientDashboard';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; 
 
@@ -26,6 +28,8 @@ function App() {
           <Route path='/vitals' element={<Vitals/>}/>
           <Route path='/medical-history' element={<MedicalHistory/>}/>
           <Route path='/appointments' element={<VisitAppointments/>}/>
+          <Route path='/doctor-details' element={<DoctorDetails/>}/>
+          <Route path='/doctor-vitals' element={<DoctorVitals/>}/>
           </Routes>
         </div>
       </Router>
