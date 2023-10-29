@@ -25,12 +25,17 @@ const addDoctorToPatient = async (_, { input }) => {
         throw new Error('Doctor not found.');
       }
 
-      patient.Doctor = doctor; 
+      patient.DoctorID = DoctorID; 
     }
 
     await patient.save();
 
-    return patient;
+    const updatedPatient = await Patient.findByPk(PatientID, {
+      include: Doctor,
+      include: User
+    });
+
+    return updatedPatient;
   } catch (error) {
     console.error('Error adding doctor to patient:', error);
     throw new Error(`Failed to add doctor to patient: ${error.message}`);
