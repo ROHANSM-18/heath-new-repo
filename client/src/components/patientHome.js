@@ -24,6 +24,7 @@ import {
 } from '@mui/material';
 import { Outlet, Link } from 'react-router-dom';
 import MuiAlert from '@mui/material/Alert';
+import backgroundImage from '../components/Screenshot_1.png';
 
 const theme = createTheme({
   palette: {
@@ -32,7 +33,9 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Forte',
+    h6: {
+      textTransform: 'none',
+    },
   },
 });
 
@@ -52,7 +55,7 @@ function calculateAge(dateOfBirth) {
 }
 
 const tableCellStyle = {
-  width: '50%',
+  width: '34%',
   margin: '0 auto',
 };
 
@@ -93,33 +96,33 @@ const PatientHome = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div>
+      <div style={{ backgroundImage: `url(${backgroundImage})`, backgroundSize: 'cover', backgroundRepeat: 'repeat', height:'100vh'}}>
         <AppBar position="static">
           <Toolbar>
             <Grid container alignItems="center" justifyContent="space-between">
               <Grid item>
               <Button component={Link} to="/patient-home" variant="text" style={{ textDecoration: 'none' , color:'white' }} >
 
-                <Typography variant="h6" className="logo-style">
-                  Health Analytics Platform
+                <Typography variant="h6" style={{ fontFamily: 'Josefin Sans, sans-serif' }}>
+                <b>Health Analytics Platform</b>
                 </Typography>
                  </Button>
               </Grid>
               <Grid item>
                 <Grid container spacing={2}>
                   <Grid item>
-               <Button component={Link} to="/vitals" variant="text" style={{ textDecoration: 'none' , color:'white' }} >
-                 Vitals
+               <Button component={Link} to="/vitals" variant="text" style={{ textDecoration: 'none', color: 'white', fontFamily: 'Josefin Sans, sans-serif', textTransform: 'none' }}>
+               <p style={{ fontSize: '120%' }}><b>Vitals</b></p>
                  </Button>
                   </Grid>
                   <Grid item>
-                  <Button component={Link} to="/medical-history" variant="text" style={{ textDecoration: 'none' , color:'white' }} >
-                  Medical History
+                  <Button component={Link} to="/medical-history" variant="text" style={{ textDecoration: 'none', color: 'white', fontFamily: 'Josefin Sans, sans-serif', textTransform: 'none' }} >
+                  <p style={{ fontSize: '120%' }}><b>Medical History</b></p>
                  </Button>
                   </Grid>
                   <Grid item>
-                  <Button component={Link} to="/appointments" variant="text" style={{ textDecoration: 'none' , color:'white' }} >
-                  Appointments
+                  <Button component={Link} to="/appointments" variant="text" style={{ textDecoration: 'none', color: 'white', fontFamily: 'Josefin Sans, sans-serif', textTransform: 'none' }} >
+                  <p style={{ fontSize: '120%' }}><b>Appointments</b></p>
                  </Button>
                   </Grid>
 
@@ -129,7 +132,7 @@ const PatientHome = () => {
                 <IconButton onClick={handleDrawerOpen}>
                   <Avatar
                     sx={{
-                      backgroundColor: 'rgba(250, 235, 215, 0.901)',
+                      backgroundColor: 'rgba(251, 184, 170, 0.31)',
                     }}
                   >
                     {name}
@@ -142,43 +145,40 @@ const PatientHome = () => {
             </Grid>
           </Toolbar>
         </AppBar>
-        <div className="main-content">
-          <h2>
+        <div >
+          <h2 style={{ textAlign: 'center', marginTop: '5vh', marginBottom: '5vh' }}>
             Welcome, <span style={{ color: '#ff5733' }}>{patient.FirstName}</span>
           </h2>
+          
           <TableContainer component={Paper} style={tableCellStyle}>
             <Table>
               <TableBody>
                 <TableRow>
-                  <TableCell>First Name:</TableCell>
+                  <TableCell style={{ color: '#ff5733', width: '50%' }}> First Name: </TableCell>
                   <TableCell>{patient.FirstName}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Last Name:</TableCell>
+                  <TableCell style={{ color: '#ff5733' }}>Last Name:</TableCell>
                   <TableCell>{patient.LastName}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Date of Birth:</TableCell>
+                  <TableCell style={{ color: '#ff5733' }}>Date of Birth:</TableCell>
                   <TableCell>{formattedDateOfBirth}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Gender:</TableCell>
+                  <TableCell style={{ color: '#ff5733' }}>Gender:</TableCell>
                   <TableCell>{patient.Gender}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Age:</TableCell>
+                  <TableCell style={{ color: '#ff5733' }}>Age:</TableCell>
                   <TableCell>{age} years</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Contact Information:</TableCell>
+                  <TableCell style={{ color: '#ff5733' }}>Contact Information:</TableCell>
                   <TableCell>{patient.ContactInformation}</TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Doctor:</TableCell>
-                  <TableCell>{patient.Doctor && patient.Doctor.FirstName}</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Email:</TableCell>
+                  <TableCell style={{ color: '#ff5733' }}>Email:</TableCell>
                   <TableCell>{patient.UserID && patient.UserID.email}</TableCell>
                 </TableRow>
               </TableBody>
