@@ -16,7 +16,13 @@ import {
   Typography,
   Card,
   CardContent,
-  createTheme
+  createTheme,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
 } from '@mui/material';
 import {
   ResponsiveContainer,
@@ -39,9 +45,16 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Forte',
+    h6: {
+      textTransform: 'none',
+    },
   },
 });
+
+const tableCellStyle = {
+  width: '50%',
+  margin: '0 auto',
+};
 
 const Vitals = () => {
   const userData = JSON.parse(localStorage.getItem(USER_DATA_KEY));
@@ -73,6 +86,11 @@ const Vitals = () => {
   const handleSnackbarClose = () => {
     setLogoutSnackbarOpen(false);
   };
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleDateString();
+  };
+
   
   const { loading: vitalLoading, error: vitalError, data: vitalData } = useQuery(GET_VITALS_BY_PATIENT_ID, {
     variables: { patientId: patientID },
@@ -99,11 +117,11 @@ const Vitals = () => {
   };
 
   const vitalColors = {
-    BloodPressure: 'purple',
-    HeartRate: 'blue',
-    RespiratoryRate: 'green',
-    Temperature: 'red',
-    OxygenSaturation: 'orange',
+    BloodPressure: 'white',
+    HeartRate: '#87cefa',
+    RespiratoryRate: '#9de24f',
+    Temperature: '#ff6666',
+    OxygenSaturation: '#ffbd55',
   };
 
   const pieChartData = Object.keys(vitalLimits).map((vitalName) => ({
@@ -118,7 +136,7 @@ const Vitals = () => {
   Object.keys(vitalLimits).forEach((vitalName) => {
     if (vitalName !== 'BloodPressure') { 
       const chartData = vitalsData.map((vital) => ({
-        name: vital.VisitAppointment.DateAndTime, 
+        name: formatDate(vital.VisitAppointment.DateAndTime), 
         value: vital[vitalName],
         color: vitalColors[vitalName],
         message: getVitalMessage(vitalName, vital[vitalName]),
@@ -129,7 +147,7 @@ const Vitals = () => {
           <Card>
             <CardContent>
               <Typography variant="h6">{vitalName} Chart</Typography>
-              <ResponsiveContainer width="80%" height={200}>
+              <ResponsiveContainer width="80%" height={300}>
                 <BarChart data={chartData}>
                   <XAxis dataKey="name" />
                   <YAxis />
@@ -146,6 +164,7 @@ const Vitals = () => {
     }
   });
 
+  
   function getVitalMessage(vitalName, value) {
     const { min, max } = vitalLimits[vitalName];
     if (value < min) {
@@ -168,26 +187,26 @@ const Vitals = () => {
             <Grid container alignItems="center" justifyContent="space-between">
               <Grid item>
                 <Button component={Link} to="/patient-home" variant="text" style={{ textDecoration: 'none', color: 'white' }}>
-                  <Typography variant="h6" className="logo-style">
-                    Health Analytics Platform
+                  <Typography variant="h6" style={{ fontFamily: 'Josefin Sans, sans-serif' }}>
+                  <b>Health Analytics Platform</b>
                   </Typography>
                 </Button>
               </Grid>
               <Grid item>
                 <Grid container spacing={2}>
                   <Grid item>
-                    <Button component={Link} to="/vitals" variant="text" style={{ textDecoration: 'none', color: 'white' }}>
-                      Vitals
+                    <Button component={Link} to="/vitals" variant="text" style={{ textDecoration: 'none', color: 'white', fontFamily: 'Josefin Sans, sans-serif', textTransform: 'none' }}>
+                    <p style={{ fontSize: '120%' }}><b>Vitals</b></p>
                     </Button>
                   </Grid>
                   <Grid item>
-                    <Button component={Link} to="/medical-history" variant="text" style={{ textDecoration: 'none', color: 'white' }}>
-                      Medical History
+                    <Button component={Link} to="/medical-history" variant="text" style={{ textDecoration: 'none', color: 'white', fontFamily: 'Josefin Sans, sans-serif', textTransform: 'none' }}>
+                    <p style={{ fontSize: '120%' }}><b>Medical History</b></p>
                     </Button>
                   </Grid>
                   <Grid item>
-                    <Button component={Link} to="/appointments" variant="text" style={{ textDecoration: 'none', color: 'white' }}>
-                      Appointments
+                    <Button component={Link} to="/appointments" variant="text" style={{ textDecoration: 'none', color: 'white', fontFamily: 'Josefin Sans, sans-serif', textTransform: 'none' }}>
+                    <p style={{ fontSize: '120%' }}><b>Appointments</b></p>
                     </Button>
                   </Grid>
                 </Grid>
@@ -196,7 +215,7 @@ const Vitals = () => {
                 <IconButton onClick={handleDrawerOpen}>
                   <Avatar
                     sx={{
-                      backgroundColor: 'rgba(250, 235, 215, 0.901)',
+                      backgroundColor: 'rgba(251, 184, 170, 0.31)',
                     }}
                   >
                     {name}
@@ -211,20 +230,42 @@ const Vitals = () => {
         </AppBar>
         <div>
           {/* First Row */}
-          <Grid container spacing={3}>
+          <Grid container spacing={3}  style={{ marginTop: '1.5vh',marginBottom:'5vh'}}   >
             <Grid item xs={6}>
-              <Paper elevation={3} style={{ padding: '20px' }}>
-                <div style={{ backgroundColor: 'orange', padding: '5px' }}>
-                  <Typography variant="h6">Number of Visits</Typography>
+              <Paper elevation={3} style={{ marginLeft:'10vw', width:'60%', padding: '1.5%', color:'white' }}>
+                <div style={{ backgroundColor: 'rgb(249, 85, 49)', padding: '5px' }}>
+                  <Typography variant="h6" style = {{fontFamily: 'Josefin Sans, sans-serif', textTransform: 'none'}}>
+                  <b>Number of Visits</b></Typography>
                   <Typography variant="h4">{numVisits}</Typography>
                 </div>
               </Paper>
+              <br/>
+              <div style={{marginLeft:'4vw'}}>
+              <TableContainer component={Paper} style={tableCellStyle}>
+            <Table >
+              <TableHead>
+                <TableRow>
+                  <TableCell style={{ color: '#ff5733' }}>Visit ID</TableCell>
+                  <TableCell style={{ color: '#ff5733' }}>Date</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {vitalsData.map((vital) => (
+                  <TableRow key={vital.vitalID}>
+                    <TableCell>{vital.VisitAppointment.VisitID}</TableCell>
+                    <TableCell>{formatDate(vital.VisitAppointment.DateAndTime)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          </div>
             </Grid>
             <Grid item xs={6}>
-              <Paper elevation={3} style={{ padding: '20px' }}>
-                <div style={{ backgroundColor: 'yellow', padding: '10px' }}>
-                  <Typography variant="h6">Recent Vital Chart</Typography>
-                  <ResponsiveContainer width="105%" height={200}>
+              <Paper elevation={3} style={{ padding: '20px', width:'70%', marginTop:'4vh' }}>
+                <div style={{ backgroundColor: '', padding: '10px' }}>
+                  {/* <Typography variant="h6">Recent Vital Chart</Typography> */}
+                  <ResponsiveContainer width="100%" height={200}>
                     <PieChart>
                       <Pie
                         data={pieChartData}
